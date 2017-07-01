@@ -8,13 +8,14 @@ My solution can be found in the [jupyter notebook](https://github.com/stefancyli
 
 ## Dataset
 The dataset contains color images of 43 differnt German traffic signs. The images are 32x32 pixel RGB. The dataset is pre-split into train-, validatation- and testset.
+
 |                    | n     | %     |
 |--------------------|-------|-------|
 | Train dataset      | 34799 | 67%   |
 | Validation dataset | 4410  | 8,5%  |
 | Test dataset       | 12630 | 24,5% |
 
-The folowing signs are included
+The folowing signs are included:
 
 ![prototypes](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/prototypes.png)
 
@@ -50,6 +51,8 @@ At first only the less common classes were augmented to even the distribution a 
 Better performance was acheived by augmenting images from all classes. For each label 100 random samples were choosen and 8 augmented images generated each. This results in additional 34400 images.
 
 ![data augmentation](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/data_aug.png)
+
+Histgram after data augmentation:
 
 ![histogram after augmentation](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/histogram_after_aug.png)
 
@@ -102,13 +105,12 @@ As the starting point the model from the LeNet Lab was used.
 | 10     | 128   | 0.001         | 4x        | 0       | 2x            | 2x, `0.6` | 0.996 | 0.976      | 0.964 |
 
 
-
-
 ## Acquiring New Images
 To test the performance of the trained network on images from the internet, I gathered 8 pictures from Google Streetview.
 
 ![Images from internet](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/new_samples.png)
 
 ## Performance on new images -  Softmax Probabilities
-The network showed **100%** accuracy on predicting the type of steet sign.
+The network correctly predicted 8/8 and showed **100%** accuracy.
+
 ![softmax probabilities](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/softmax.png)
