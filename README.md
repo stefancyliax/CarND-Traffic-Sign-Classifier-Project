@@ -88,13 +88,13 @@ As the starting point the model from the LeNet Lab was used.
 2. Removed the two pooling layers from the network and replaced them with two additinal convulutional layers. This increases the size of the network and the computation needed significantly (from 400x120 to 12800x120 on the first fully connected layer), but increases the performance a lot.
 3. Testing if the batch size can by optimized. -> No, best performance with 128 batchsize.
 4. Lower learning rate is probably not improving the performance since the model is quite overfit already. - no improvement.
-5. The model is still slightly overfit. Test if change to dropout rate improves the performance here
+5. The model is still slightly overfit. Test if change to dropout rate improves the performance here.
 
 | Epochs | Batch | Learning rate | ConvLayer | Pooling | FullyConLayer | Dropout | Train | Validation | Test  |
 |--------|-------|---------------|-----------|---------|---------------|---------|-------|------------|-------|
 | 10     | 128   | 0.001         | 2x        | 2x      | 2x            | 0       | 0.980 | 0.897      | 0.899 |
 | 10     | 128   | 0.001         | 2x        | 2x      | 2x            | `2x, 0.5` | 0.946 | 0.956      | 0.928 |
-| 10     | 128   | 0.001         | `4x`      | `0`     | 2x            | 2x, 0.5 | 0.995 | 0.972      | **0.972** |
+| 10     | 128   | 0.001         | `4x`      | `0`     | 2x            | 2x, 0.5 | 0.994 | 0.985      | **0.973** |
 | 10     | `256` | 0.001         | 4x        | 0       | 2x            | 2x, 0.5 | 0.990 | 0.989      | 0.968 |
 | 10     | `64`  | 0.001         | 4x        | 0       | 2x            | 2x, 0.5 | 0.993 | 0.976      | 0.968 |
 | `20`   | 128   | 0.001         | 4x        | 0       | 2x            | 2x, 0.5 | 0.999 | 0.989      | 0.972 |
