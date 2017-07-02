@@ -4,7 +4,7 @@
 ## Overview
 In this project, the task is to model and train a classifier for German traffic signs. A convolutional neural networks is used to trained on a  [provided dataset of German traffic signs](http://benchmark.ini.rub.de/?section=gtsrb&subsection=dataset).
 
-My solution can be found in the [jupyter notebook](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb) or the [html export](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.html)
+My solution can be found in the [jupyter notebook](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/Traffic_Sign_Classifier.ipynb) or the [html export](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/Traffic_Sign_Classifier.html)
 
 ## Dataset
 The dataset contains color images of 43 differnt German traffic signs. The images are 32x32 pixel RGB. The dataset is pre-split into train-, validatation- and testset.
@@ -17,20 +17,20 @@ The dataset contains color images of 43 differnt German traffic signs. The image
 
 The folowing signs are included:
 
-![prototypes](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/prototypes.png)
+![prototypes](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/prototypes.png)
 
 
 To get a feeling for the data set, I printed a random set of 32 samples.
 
-![random set](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/random_set.png)
+![random set](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/random_set.png)
 
 Some of the images were rather low quality, beeing either very dark, very light or dark with a light background. This is something the preprocessing of the images will have to considert.
 
-![bad](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/bad_samples.png)
+![bad](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/bad_samples.png)
 
 The second observation is, that the images are rather badly distributed over the labels. The most common label is 10 times more frequent than the least common.
 
-![histogram](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/histogram.png)
+![histogram](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/histogram.png)
 
 
 ## Preprocessing
@@ -41,21 +41,35 @@ For preprocessing there are four steps done.
 4. Shuffle the data using sklearn
 
 #### Histogram equalizing
-Because many of the images are very dark (or very light), I chose to implement a histogram equalization using skimage.exposure.equalize_hist.
+Some of the images are very dark (or very light) which means that their histogram isn't evenly distributed. The histogram illustrates value of the pixels vs. their frequentness. See example below.
 
-![histogram equalization](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/hist_equ.png)
+All pixels of the example image are between 0 and 50 in brightness in the range of [0,255] (8bit). This means that the image is rather dark, since all pixels are of low value and that there is little dynamic range, which describes the range between the lightest and darkest pixel in the image.
+
+To mitigate this, a I chose to implement a histogram equalization using skimage.exposure.equalize_hist. This function basically scales the values of the pixels from [darkest pixel, lightest pixel] to [0,255].
+
+Another implementation to achieve this would be:
+
+ *pixelvalue_new = (pixelvalue - pixel_min) / (pixel_max - pixel_min) * 255*
+
+ As seen below the leads to the pixel values beeing evenly distributed in the histogram and the image having good exposure.
+
+![histogram equalization](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/hist_equ.png)
 
 #### Data augmentation
 Because the data is unevenly distributed and there are rather few samples of some traffic signs, a data augmentation was implemnted. For this generated 100 random samples for each traffic sign class and blurred, added noise, projected, rotated and sheared the image.
 At first only the less common classes were augmented to even the distribution a bit. But it was found that this degraded the performance slightly.
 Better performance was acheived by augmenting images from all classes. For each label 100 random samples were choosen and 8 augmented images generated each. This results in additional 34400 images.
 
-![data augmentation](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/data_aug.png)
+![data augmentation](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/data_aug.png)
 
 Histgram after data augmentation:
 
-![histogram after augmentation](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/histogram_after_aug.png)
+![histogram after augmentation](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/histogram_after_aug.png)
 
+#### Color
+I deliberately choosen not to convert the dataset to grayscale. The traffic signs natually rely on color to be discerned. In Germany most traffic signs are red, blue or yellow. This color information would be lost in a grayscale conversion.
+I read the [Yann LeCun Paper](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) that improved the performance by using grayscale pictures but they also used an additional fully connected layer.
+Training with grayscale data would be faster though, because the input dimentionality is smaller by a factor of 3.
 
 ## Model Architecture
 For the model a LeNet5 architecture is used.
@@ -106,11 +120,12 @@ As the starting point the model from the LeNet Lab was used.
 
 
 ## Acquiring New Images
-To test the performance of the trained network on images from the internet, I gathered 8 pictures from Google Streetview.
+To test the performance of the trained network on images from the internet, I gathered 8 pictures from Google Streetview. They can be found in the [additional_signs/](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/tree/master/additional_signs) folder in the repo.
+The picutres quality is comparable to the provided dataset. They are from the real world, to the contrast between the sign and the background is not perfect and sample 3 and 6 are even partly covered. They are a little more noisy but since I deliberately added noise in the data autmentation, the model should be able to handle it.
 
-![Images from internet](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/new_samples.png)
+![Images from internet](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/new_samples.png)
 
 ## Performance on new images -  Softmax Probabilities
 The network correctly predicted 8/8 and showed **100%** accuracy.
 
-![softmax probabilities](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/blob/master/pic/softmax.png)
+![softmax probabilities](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/softmax.png)
