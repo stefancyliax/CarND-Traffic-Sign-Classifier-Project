@@ -57,8 +57,12 @@ Another implementation to achieve this would be:
 
 #### Data augmentation
 Because the data is unevenly distributed and there are rather few samples of some traffic signs, a data augmentation was implemnted. For this generated 100 random samples for each traffic sign class and blurred, added noise, projected, rotated and sheared the image.
-At first only the less common classes were augmented to even the distribution a bit. But it was found that this degraded the performance slightly.
-Better performance was acheived by augmenting images from all classes. For each label 100 random samples were choosen and 8 augmented images generated each. This results in additional 34400 images.
+
+At first only the less common classes were augmented to even the distribution out. This approach degraded the performance slightly.
+
+Better performance was acheived by augmenting images from all classes. For each label 100 random samples were choosen and 8 augmented images generated each.
+
+This results in 800 additional images per class and 34400 images in total.
 
 ![data augmentation](https://github.com/stefancyliax/CarND-Traffic-Sign-Classifier-Project/raw/master/pic/data_aug.png)
 
@@ -68,7 +72,9 @@ Histgram after data augmentation:
 
 #### Color
 I deliberately choosen not to convert the dataset to grayscale. The traffic signs natually rely on color to be discerned. In Germany most traffic signs are red, blue or yellow. This color information would be lost in a grayscale conversion.
+
 I read the [Yann LeCun Paper](http://yann.lecun.com/exdb/publis/pdf/sermanet-ijcnn-11.pdf) that improved the performance by using grayscale pictures but they also used an additional fully connected layer.
+
 Training with grayscale data would be faster though, because the input dimentionality is smaller by a factor of 3.
 
 ## Model Architecture
